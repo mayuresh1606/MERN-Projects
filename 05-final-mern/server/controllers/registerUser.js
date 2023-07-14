@@ -1,4 +1,7 @@
 import User from "../models/User.js"
+import jwt from "jsonwebtoken"
+import dotenv from "dotenv"
+dotenv.config();
 
 export const getRegisteredUser = async (req, res) => {
     try{
@@ -47,9 +50,13 @@ export const loginUser = async (req, res) => {
             }else{
                 user = await User.findOne({userName});
             }
-            console.log(user);
             const isMatch = await user.comparePassword(password)
-            if (isMatch) return res.status(200).json({message: "User logged in..."});
+            if (isMatch){
+                let newUser = await {userName: user.userName}
+                const token = jwt.sign(newUser, process.env.JWT_SECRET)
+                return res.status(200).json({token, message: "User logged in..."});
+            }
+            // if (isMatch) return 
             else return res.status(401).json({message: "Invalid Credentials!"})
         }
     }catch(err){

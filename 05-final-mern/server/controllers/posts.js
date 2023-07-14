@@ -1,9 +1,11 @@
 import Post from "../models/Post.js";
 
+
 export const getPosts = async (req, res) => {
     try {
-        const posts = await Post.find({});
-        console.log(posts)
+        let posts = await Post.find({});
+        console.log(req.user, 'USER')
+        posts = await posts.filter((post) => post.creator === req.user.userName)
         return res.status(200).json({posts, length:posts.length});
     } catch (err) {
         return res.status(500).json({err, message: "Internal server error."})
