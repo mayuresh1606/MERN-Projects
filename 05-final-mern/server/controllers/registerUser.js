@@ -75,26 +75,14 @@ export const addToFollowing = async (req, res) => {
         const { id } = req.params;
 
         // userName of user who's followingList is to be updated...
-        const {userName} = req.body
-        let user = await User.findById(id);
-
-        // current followers before updating
-        let tempFollowers = user.followersList
-
-        // update userName into followers List
-        await User.findByIdAndUpdate(id, {followersList: [...tempFollowers, userName]});
+        // userName2 of user who's followersList is to be updated...
+        const {userName, userName2} = req.body
+        let user = await User.updateOne({_id: id}, {$push: { followersList: userName }});
 
         // now we need to update followingList of user sending follow request
-        const newUser = await User.findById(id)
+        await User.updateOne({userName}, { $push: { followingList: userName2 }})
 
-        // userName of user who he/she has followed
-        const newUserName = newUser.userName;
-        let tempFollowingUser = await User.findOne({userName});
-        tempFollowingUser.followingList.push(newUserName)
-
-        // updating userName into followingList
-        await User.findOneAndUpdate({userName}, {followingList: tempFollowingUser.followingList});
-        return res.status(201).json({newUser, message: "User added to following"});
+        return res.status(201).json({user, message: `User ${userName2} added to following`});
     }catch(err){
         return res.status(500).json({err, message: "Internal Server Error."});
     }
@@ -103,20 +91,16 @@ export const addToFollowing = async (req, res) => {
 
 export const removeFollower = async (req, res) => {
     try{
+        // id of user who is going to remove follower
         const { id } = req.params;
-        const { userName } = req.body;
-        const user = await User.findById(id);
+        // userName of user who is going to be removed from followers list
+        // userName2 of user who is going to be removed from following list
+        const { userName, userName2 } = req.body;
+        let user = await User.updateOne({_id: id}, { $pull: { followersList: userName } });
     
-        let tempUserName = user.userName;
-        let tempFollowersList = user.followersList.filter(userNames => userNames !== userName);
-        await User.findByIdAndUpdate(id, {followersList: tempFollowersList});
-    
-        const tempUser = await User.findOne({userName});
-        const tempFollowingList = tempUser.followingList.filter((user) => user !== tempUserName)
-        await User.findOneAndUpdate({userName}, {followingList: tempFollowingList});
-    
-        const newUser = await User.findById(id);
-        return res.status(202).json({newUser, message:`User ${userName} removed from followers list`});
+        await User.updateOne({userName}, {$pull: { followingList: userName2 }})
+
+        return res.status(202).json({user, message:`User ${userName} removed from followers list`});
     }catch(err){
         return res.status(500).json({err, message: "Internal Server Error!"})
     }
@@ -124,19 +108,17 @@ export const removeFollower = async (req, res) => {
 
 export const removeFollowing = async (req, res) => {
     try{
+        // id of user who's followingList is to be updated
         const {id} = req.params;
-        const {userName} = req.body;
+        // userName of user who is to be removed from followersList
+        // userName2 of user who is to be removed from followingList
+        const {userName, userName2} = req.body;
     
-        const user = await User.findById(id);
-        const tempUserName = user.userName;
-        let tempFollowingList = user.followingList.filter(user => user !== userName);
-        await User.findByIdAndUpdate(id, {followingList: tempFollowingList});
+        const user = await User.updateOne({_id: id}, {$pull: { followersList: userName }});
+
+        await User.updateOne({userName}, {$pull: { followingList: userName2 }});
+        return res.status(202).json({user, message: `User ${userName2} removed from followingList!`})
     
-        const newUser = await User.findOne({userName});
-        const tempFollowersList = newUser.followersList.filter(user => user !== "shruti0711");
-        await User.findOneAndUpdate({userName}, {followersList: tempFollowersList});
-    
-        return res.status(202).json({user, message: `User ${userName} removed from followingList!`})
     }catch(err){
         return res.status(500).json({err, message: "Internal server error!"});
     }
