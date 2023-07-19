@@ -18,7 +18,6 @@ export const registerUser = async (req, res) => {
 
         if (email && firstName && lastName && password && userName){
             const user = await User.create(req.body)
-            console.log(user);
             return res.status(201).json({user, message: `User ${firstName} created successfully...`})
         }
         return res.status(400).json({message: "Some of the following fields is missing: firstName, lastName, email, userName, password."})
@@ -47,19 +46,23 @@ export const loginUser = async (req, res) => {
     try{
         const { password, userName } =  req.body;
         if (userName){
+            let isMatch;
             let user;
             if (userName.includes("@")) {
                 user = await User.findOne({email:userName});
             }else{
                 user = await User.findOne({userName});
             }
-            const isMatch = await user.comparePassword(password)
+            if (user !== null){
+                isMatch = await user.comparePassword(password)
+            }else if(user === null){
+                return res.status(404).json({message: "User not found"})
+            }
             if (isMatch){
                 let newUser = await {userName: user.userName}
-                const token = jwt.sign(newUser, process.env.JWT_SECRET)
+                const token = jwt.sign(newUser, process.env.JWT_SECRET, { expiresIn: "15d" })
                 return res.status(200).json({token, message: "User logged in..."});
             }
-            // if (isMatch) return 
             else return res.status(401).json({message: "Invalid Credentials!"})
         }
     }catch(err){
