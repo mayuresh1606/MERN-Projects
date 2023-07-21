@@ -52,3 +52,14 @@ export const increaseLike = async (req, res) => {
         return res.status(500).json({err, message: "Internal Server Error."})
     }
 }
+
+export const decreaseLike = async (req, res) => {
+    try{
+        const { id } = req.params;
+        const { userName } = req.body;
+        const post = await Post.updateOne({_id:id}, {$inc:{ likeCount: -1 }, $pull: { likedBy: userName }});
+        return res.status(200).json({post, message: "Decreased like count"})
+    }catch(err){
+        return res.status(500).json({err, message: "Internal Server Error."})
+    }
+}

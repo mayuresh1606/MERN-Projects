@@ -12,6 +12,36 @@ export const getRegisteredUser = async (req, res) => {
     }
 }
 
+export const getUsersSearch = async (req, res) => {
+    // try{
+        const { search } = req.query;
+        console.log(search);
+        // const users = await User.aggregate([{
+        //     $search: {
+        //         text:{
+        //             query: search,
+        //             path: "userName"
+        //         }
+        //     }
+        // }])
+        const users = await User.find({ $text: { $search: search } })
+        // const users = await User.find({ userName: { $regex: search }})
+        return res.status(200).json({users, length: users.length})
+    // }catch(err){
+    //     return res.status(500).json({err, message: "Internal Server Error."})
+    // }
+}
+
+export const getUser = async (req, res) => {
+    try{
+        const { userName } = req.params;
+        const user = await User.findOne({userName})
+        return res.status(200).json({ user })
+    }catch(err){
+        return res.status(500).json({err, message: "Internal Server Error."})
+    }
+}
+
 export const registerUser = async (req, res) => {
     try{
         const {email, firstName, lastName, password, userName} = req.body;
@@ -22,6 +52,12 @@ export const registerUser = async (req, res) => {
         }
         return res.status(400).json({message: "Some of the following fields is missing: firstName, lastName, email, userName, password."})
     }catch(err){
+        if (err.keyValue.userName){
+            return res.status(403).json({err, message: `Username ${err.keyValue.userName} already exists!`})
+        }
+        if (err.keyValue.email){
+            return res.status(403).json({err, message: `Email ${err.keyValue.email} already exists!`})
+        }
         return res.status(500).json({err, message: "Internal Server Error"});
     }
 }

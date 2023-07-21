@@ -22,7 +22,8 @@ export const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formDetails);
+        // console.log(formDetails);
+        console.log(formDetails, "FORM")
         if(!formDetails.firstName){
             setErrorMsg({
                 flag: true,
@@ -72,7 +73,7 @@ export const Register = () => {
                 console.log(err);
                 setErrorMsg({
                     flag: true,
-                    message: err.response.data.err.message
+                    message: err.response.data.message
                 })
             }
         }
@@ -116,6 +117,7 @@ export const Register = () => {
                 {/* <input type="file" placeholder="Enter your password here..." name="profileImg" onChange={(e) => setFormDetails({...formDetails, profileImg: e.currentTarget.value})} /> */}
             </div>
             <button type="submit">Submit</button>
+            <p>Already a user? <a href="/login"> Log in</a></p>
             { errorMsg.flag && errorMsg.message }
         </form>
     </>

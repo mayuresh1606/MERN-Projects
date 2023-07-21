@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../context";
 import axios from "axios";
 import { Navbar } from "../components/navbar/Navbar";
+import { Container } from "../components/container/Container";
 
 export const Home = () => {
     const navigate = useNavigate()
@@ -44,18 +45,10 @@ export const Home = () => {
         else navigate("/login", {replace: true});
     }, [])
 
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        navigate("/login", {replace: true});
-    }
     return <>
         <Navbar userName={userName} />
-        {posts ? <>
-            {posts.map((post) => {
-                return <p key={post._id} >{post.creator}</p>
-            })}
-        </> : <p>Login first</p> }
+        <Container user={userName} posts={posts}></Container>
+        
         { errorMsg.flag && errorMsg.message }
-        <button onClick={handleLogout}>Logout</button>
     </>
 }
