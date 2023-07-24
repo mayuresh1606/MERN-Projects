@@ -2,30 +2,17 @@ import React from "react";
 import "./styles.css";
 import { FcLike, FcDislike } from "react-icons/fc";
 import { MdOutlineModeComment } from "react-icons/md";
-import axios from "axios";
+import { useGlobalContext } from "../../context";
 
-export const Container = ({ posts, user }) => {
-    const increaseLike = async (id, user) => {
-        const { data } = await axios.patch(`http://localhost:5000/post/increaselike/${id}`, {
-            userName: user,
-            id
-        });
-        console.log(data)
-    }
-    const decreaseLike = async (id, user) => {
-        const { data } = await axios.patch(`http://localhost:5000/post/decreaselike/${id}`, {
-            userName: user,
-            id
-        });
-        console.log(data)
-    }
+export const Container = ({ posts, setPosts, user }) => {
+    const {increaseLike, decreaseLike} = useGlobalContext()
     return <>
         <div className="container">
             <div className="left-container">
                 {posts ? <>
                 {posts.map((post) => {
                     const { _id, creator, selectedFile, likedBy, likeCount, caption, tags } = post
-                    return <article className="post" key={_id}>
+                    return <article className="post-home" key={_id}>
                         <div className="name">
                             {/* <img src="" alt="err" /> */}
                             <strong>{ creator }</strong>

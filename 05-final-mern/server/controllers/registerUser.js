@@ -13,7 +13,7 @@ export const getRegisteredUser = async (req, res) => {
 }
 
 export const getUsersSearch = async (req, res) => {
-    // try{
+    try{
         const { search } = req.query;
         console.log(search);
         // const users = await User.aggregate([{
@@ -27,9 +27,9 @@ export const getUsersSearch = async (req, res) => {
         const users = await User.find({ $text: { $search: search } })
         // const users = await User.find({ userName: { $regex: search }})
         return res.status(200).json({users, length: users.length})
-    // }catch(err){
-    //     return res.status(500).json({err, message: "Internal Server Error."})
-    // }
+    }catch(err){
+        return res.status(500).json({err, message: "Internal Server Error."})
+    }
 }
 
 export const getUser = async (req, res) => {

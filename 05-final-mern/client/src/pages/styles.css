@@ -1,0 +1,28 @@
+.inv-form{
+    display: none;
+}
+.display{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 50%;
+    height: 50vh;
+}
+.home-container{
+    display: grid;
+    grid-template-columns: 30% 30% 30%;
+    place-content: center;
+}
+.home-post{
+    padding: 5%;
+}
+.create-post-btn{
+        margin: 2rem 0;
+            width: 20%;
+            height: 3rem;
+            font-size: large;
+            border: none;
+            border-radius: 4px;
+            background: #F79489;
+            color: white;
+}

@@ -7,19 +7,18 @@ import { Container } from "../components/container/Container";
 
 export const Home = () => {
     const navigate = useNavigate()
-    // const {token, setToken} = useGlobalContext();
+    const {userName, setUserName, setPosts, posts} = useGlobalContext();
 
-    const [posts, setPosts] = useState([]);
+    
     const [errorMsg, setErrorMsg] = useState({
         flag: false,
         message: ""
     })
-    const [userName, setUserName] = useState("");
+    
 
     // console.log(token);
     useEffect(() => {
         const token = localStorage.getItem("token")
-        console.log(token, "CLIENT")
         const fetchPosts = async () => {
             try{
                 const { data } = await axios.get("http://localhost:5000/post/home/", {
@@ -27,7 +26,7 @@ export const Home = () => {
                     Authorization: `Bearer ${token}`
                     }
                 })
-                console.log(data)
+                localStorage.setItem("userName", data.userName);
                 setUserName(data.userName);
                 setPosts(data.posts);
             }catch(err){
@@ -43,11 +42,11 @@ export const Home = () => {
         }
         if (token) fetchPosts()
         else navigate("/login", {replace: true});
-    }, [])
+    }, [navigate])
 
     return <>
         <Navbar userName={userName} />
-        <Container user={userName} posts={posts}></Container>
+        <Container user={userName} setPosts={setPosts} posts={posts}></Container>
         
         { errorMsg.flag && errorMsg.message }
     </>

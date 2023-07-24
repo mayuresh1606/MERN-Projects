@@ -11,7 +11,7 @@
     padding: 5% 25%;
 }
 
-.post{
+.post-home{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

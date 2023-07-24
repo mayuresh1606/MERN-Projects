@@ -26,6 +26,11 @@ export const getHomePosts = async (req, res) => {
 
 export const createPost = async (req, res) => {
     try{
+        const {tags} = req.body
+        let newTags = tags;
+        const newTagsArr = newTags.split(" ")
+        req.body["tags"] = newTagsArr;
+
         const post = await Post.create(req.body)
         return res.status(201).json({post, message:`Post was created successfully by ${post.creator}`})
     }catch(err){
