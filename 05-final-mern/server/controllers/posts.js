@@ -68,3 +68,14 @@ export const decreaseLike = async (req, res) => {
         return res.status(500).json({err, message: "Internal Server Error."})
     }
 }
+
+export const updateComments = async (req, res) => {
+    try{
+        const { id } = req.params
+        const post = await Post.updateOne({_id: id}, {comments: req.body});
+        return res.status(202).json({post})    
+    }catch(err){
+        return res.status(500).json(err);
+    }
+    // "358453422949650"
+}

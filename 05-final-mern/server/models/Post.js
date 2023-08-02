@@ -28,6 +28,10 @@ const postSchema = mongoose.Schema({
     selectedFile:{
         type:String,
         default:""
+    },
+    comments:{
+        type:Array,
+        default:[]
     }
 })
 

@@ -1,0 +1,58 @@
+.dialog{
+        width: 50%;
+            background: lightgrey;
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+            position: absolute;
+            top: 40%;
+            left: 25%;
+            height: 70%;
+            border-radius: 10px;
+            border: 1px darkgrey solid;
+}
+
+.top{
+        height: 10%;
+            background: whitesmoke;
+}
+
+.icon{
+        position: relative;
+            height: 100%;
+            width: 8%;
+            background: grey;
+            left: 92%;
+}
+
+.main{
+    padding: 5%;
+        height: 80%;
+}
+
+.comments{
+        display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow-y: scroll;
+}
+
+.comment-box{
+        display: flex;
+            flex-direction: row;
+            background: white;
+            height: max-content;
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 5px;
+}
+
+.name-com{
+    text-align: left;
+    width: 90%;
+}
+
+.name-com:first-child {
+    margin: 0 0 10px 0;
+    font-weight: bold
+}

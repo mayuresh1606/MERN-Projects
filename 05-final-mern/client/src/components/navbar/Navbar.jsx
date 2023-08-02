@@ -3,7 +3,7 @@ import { IoLogoInstagram } from "react-icons/io"
 import "./styles.css"
 import axios from "axios";
 import { FiLogOut } from "react-icons/fi"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { useGlobalContext } from "../../context";
 
 export const Navbar = ({userName}) => {
@@ -49,7 +49,7 @@ export const Navbar = ({userName}) => {
             </form>
             <ul className="list">
                 <li>{userN}</li>
-                <li><img className="userImg" src={profileImg !== "string" ? profileImg :"https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="} alt="err" /></li>
+                <li><NavLink to={"/user"}><img className="userImg" src={profileImg !== "string" ? profileImg :"https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="} alt="err" /></NavLink></li>
                 <li><FiLogOut onClick={handleLogout} className="logout" /></li>
             </ul>
         </nav>

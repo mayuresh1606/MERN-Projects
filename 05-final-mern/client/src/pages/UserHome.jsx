@@ -6,6 +6,7 @@ import "./styles.css"
 import { FcDislike, FcLike } from "react-icons/fc";
 import { MdOutlineModeComment } from "react-icons/md";
 import { useGlobalContext } from "../context";
+import { DialogBox } from "../components/DialogBox";
 
 export const UserHome = () => {
     const { increaseLike, decreaseLike } = useGlobalContext();
@@ -53,7 +54,7 @@ export const UserHome = () => {
             }
 
             console.log(postDetails);
-            const {data} = await axios.post("http://localhost:5000/post", postDetails)
+            const {data} = await axios.post("http://localhost:5000/post", {...postDetails, creator: user})
             setErrorMsg({ flag: true, message: data.message })
             setPosts([...posts, data.post]);
             
@@ -65,6 +66,7 @@ export const UserHome = () => {
 
     return <>
         <Navbar userName={user} />
+        <DialogBox></DialogBox>
         <button className="create-post-btn" onClick={(e) => {
             e.currentTarget.nextElementSibling.className = "display"
         }}>Create a new post.</button>
