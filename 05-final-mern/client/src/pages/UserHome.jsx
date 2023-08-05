@@ -4,12 +4,14 @@ import axios from "axios";
 import FileBase from "react-file-base64"
 import "./styles.css"
 import { FcDislike, FcLike } from "react-icons/fc";
-import { MdOutlineModeComment } from "react-icons/md";
+import { CgComment } from "react-icons/cg";
+// import { MdOutlineModeComment } from "react-icons/md";
 import { useGlobalContext } from "../context";
 import { DialogBox } from "../components/DialogBox";
+import { Post } from "../components/Post";
 
 export const UserHome = () => {
-    const { increaseLike, decreaseLike } = useGlobalContext();
+    const { increaseLike, decreaseLike, dialogBox, setDialogBox } = useGlobalContext();
 
     const user = localStorage.getItem("userName")
     const token = localStorage.getItem("token");
@@ -19,6 +21,7 @@ export const UserHome = () => {
         selectedFile: ""
     });
     const [posts, setPosts] = useState([]);
+    
     const [errorMsg, setErrorMsg] = useState({
         flag: true,
         message: ""
@@ -64,9 +67,10 @@ export const UserHome = () => {
         }
     }
 
+
     return <>
         <Navbar userName={user} />
-        <DialogBox></DialogBox>
+        { dialogBox.flag && <DialogBox comments={dialogBox.comments}></DialogBox>}
         <button className="create-post-btn" onClick={(e) => {
             e.currentTarget.nextElementSibling.className = "display"
         }}>Create a new post.</button>
@@ -99,27 +103,12 @@ export const UserHome = () => {
         </form>
         <div className="home-container">
             { posts && posts.map((post) => {
-                const { _id, creator, selectedFile, likedBy, likeCount, caption, tags } = post
-                return <article className="home-post">
-                    <div className="name">
-                            {/* <img src="" alt="err" /> */}
-                            <strong>{ creator }</strong>
-                        </div>
-                        <div className="post-img">
-                            <img src={selectedFile ? selectedFile : "https://static.remove.bg/sample-gallery/graphics/bird-thumbnail.jpg"} alt="" />
-                        </div>
-                        <div className="like-comment">
-                            <div className="like">
-                                { likedBy.includes(user) ? <FcDislike onClick={() => decreaseLike(_id, user)} className="like-icon" ></FcDislike > : <FcLike onClick={() => increaseLike(_id, user)} className="like-icon"></FcLike> }
-                                <span>{likeCount}</span>
-                            </div>
-                            <MdOutlineModeComment className="comment"></MdOutlineModeComment>
-                        </div>
-                        <div className="cap-tags">
-                            <p className="caption"><strong>{creator}</strong> {caption}</p>
-                            {tags.length !== 0 && tags.map((tag) => <p key={tag} className="tag">#{tag}</p> )}
-                        </div>
-                </article>
+                const { comments } = post
+                let commentsCount = 0;
+                if (comments){
+                    commentsCount = comments.length;
+                }
+                return <Post comments={comments} post={post} commentsCount={commentsCount}></Post>
             }) }
         </div>
     </>

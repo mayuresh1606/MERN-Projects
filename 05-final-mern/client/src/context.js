@@ -10,6 +10,11 @@ export const AppProvider = ({ children }) => {
     const [searchedUsers, setSearchedUsers] = useState("")
     const [userName, setUserName] = useState("");
     const [posts, setPosts] = useState([]);
+    const [dialogBox, setDialogBox] = useState({
+        flag: false,
+        comments: [],
+        postId: ""
+    });
 
     // function for increasing and decreasing like count:
     const increaseLike = async (id, user) => {
@@ -50,7 +55,7 @@ export const AppProvider = ({ children }) => {
 
 
 
-    return <AppContext.Provider value={{token, setToken, setSearch, search, searchedUsers, setSearchedUsers, userName, setUserName, posts, setPosts, increaseLike, decreaseLike}}>{ children }</AppContext.Provider>
+    return <AppContext.Provider value={{token, setToken, setSearch, search, searchedUsers, setSearchedUsers, userName, setUserName, posts, setPosts, increaseLike, decreaseLike, dialogBox, setDialogBox}}>{ children }</AppContext.Provider>
 }
 
 export const useGlobalContext = () => {

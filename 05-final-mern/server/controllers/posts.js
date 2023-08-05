@@ -77,5 +77,4 @@ export const updateComments = async (req, res) => {
     }catch(err){
         return res.status(500).json(err);
     }
-    // "358453422949650"
 }

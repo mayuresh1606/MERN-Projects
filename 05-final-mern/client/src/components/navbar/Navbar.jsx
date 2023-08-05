@@ -41,7 +41,7 @@ export const Navbar = ({userName}) => {
     return <>
         <nav className="navbar">
             <div className="logo">
-                <IoLogoInstagram className="site-logo" />
+                <NavLink to="/"><IoLogoInstagram className="site-logo" /></NavLink>
             </div>
             <form className="search" onSubmit={handleSearch}>
                 <input type="text" className="search-input" onChange={(e) => setSearch(e.currentTarget.value)}  />

@@ -21,8 +21,14 @@
         position: relative;
             height: 100%;
             width: 8%;
-            background: grey;
+            background: white;
+            border-radius: 50%;
             left: 92%;
+}
+
+.icon > svg{
+    width: 100%;
+    height: 100%;
 }
 
 .main{
@@ -42,7 +48,7 @@
             flex-direction: row;
             background: white;
             height: max-content;
-            margin: 5px 0;
+            margin: 5px 15px 5px 0;
             padding: 5px;
             border-radius: 5px;
 }
@@ -52,7 +58,39 @@
     width: 90%;
 }
 
-.name-com:first-child {
+.like{
+    width: 10%;
+}
+
+.like > svg{
+    margin: auto;
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+.userName{
     margin: 0 0 10px 0;
     font-weight: bold
+}
+
+.comment{
+    margin-top: 0;
+    width: 100%;
+}
+
+.postComment > input{
+        width: 80%;
+            height: 1.5rem;
+            border-radius: 5px;
+            border: none;
+            box-shadow: 2px 2px grey;
+}
+
+.sub-comment{
+        height: 1.5rem;
+            border-radius: 50%;
+            border: none;
+            background: white;
+            position: relative;
+            right: 5%;
 }

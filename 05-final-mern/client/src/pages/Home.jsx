@@ -4,10 +4,11 @@ import { useGlobalContext } from "../context";
 import axios from "axios";
 import { Navbar } from "../components/navbar/Navbar";
 import { Container } from "../components/container/Container";
+import { DialogBox } from "../components/DialogBox";
 
 export const Home = () => {
     const navigate = useNavigate()
-    const {userName, setUserName, setPosts, posts} = useGlobalContext();
+    const {userName, setUserName, setPosts, posts, dialogBox} = useGlobalContext();
 
     
     const [errorMsg, setErrorMsg] = useState({
@@ -47,7 +48,7 @@ export const Home = () => {
     return <>
         <Navbar userName={userName} />
         <Container user={userName} setPosts={setPosts} posts={posts}></Container>
-        
+        { dialogBox.flag && <DialogBox comments={dialogBox.comments}></DialogBox>}
         { errorMsg.flag && errorMsg.message }
     </>
 }
